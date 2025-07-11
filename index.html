@@ -503,132 +503,134 @@
     </div>
 
 
-    <script>
-        // Ativa os ícones do Lucide
-        lucide.createIcons();
+   <script>
+        document.addEventListener('DOMContentLoaded', () => {
 
-         // --- LÓGICA DO MENU MOBILE (Comentada para clareza) ---
-        const mobileMenuButton = document.getElementById('mobile-menu-button');
-        const mobileMenu = document.getElementById('mobile-menu');
-        const mobileMenuIcon = mobileMenuButton.querySelector('i');
+            // Ativa os ícones do Lucide uma única vez.
+            lucide.createIcons();
 
-        mobileMenuButton.addEventListener('click', (e) => {
-            // 1. Impede que o clique no botão se propague para outros elementos, como o 'document'.
-            // Isso é crucial para que o listener no 'document' (que fecha o menu) não seja acionado ao mesmo tempo.
-            e.stopPropagation(); 
-            
-            // 2. Alterna a classe 'hidden' para mostrar ou esconder o menu.
-            mobileMenu.classList.toggle('hidden');
-            
-            // 3. Muda o ícone de 'menu' para 'x' e vice-versa, para feedback visual.
-            if (mobileMenu.classList.contains('hidden')) {
-                mobileMenuIcon.setAttribute('data-lucide', 'menu');
-            } else {
-                mobileMenuIcon.setAttribute('data-lucide', 'x');
+            // --- LÓGICA DO MENU MOBILE (Revisada e Unificada) ---
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+
+            if (!mobileMenuButton || !mobileMenu) {
+                console.error("Elementos do menu (botão ou o próprio menu) não encontrados no DOM.");
+                return;
             }
-            lucide.createIcons(); // Re-renderiza o ícone do Lucide.
-        });
 
-        // 4. Adiciona um listener de clique no documento inteiro para fechar o menu.
-        document.addEventListener('click', (event) => {
-            // Verifica se o menu está visível.
-            const isMenuOpen = !mobileMenu.classList.contains('hidden');
-            // Verifica se o clique foi DENTRO do menu.
-            const isClickInsideMenu = mobileMenu.contains(event.target);
-            // Verifica se o clique foi no próprio botão que abre o menu.
-            const isClickOnButton = mobileMenuButton.contains(event.target);
+            const mobileMenuIcon = mobileMenuButton.querySelector('i');
 
-            // 5. Se o menu estiver aberto E o clique foi fora do menu E não foi no botão, então fecha o menu.
-            if (isMenuOpen && !isClickInsideMenu && !isClickOnButton) {
-                mobileMenu.classList.add('hidden');
-                mobileMenuIcon.setAttribute('data-lucide', 'menu');
-                lucide.createIcons();
-            }
-        });
+            /**
+             * Função central para abrir ou fechar o menu.
+             */
+            const toggleMenu = () => {
+                mobileMenu.classList.toggle('hidden');
+                const isHidden = mobileMenu.classList.contains('hidden');
+                
+                if (mobileMenuIcon) {
+                    mobileMenuIcon.setAttribute('data-lucide', isHidden ? 'menu' : 'x');
+                    lucide.createIcons(); // Re-renderiza o ícone do Lucide.
+                }
+            };
 
+            // 1. Listener para o BOTÃO do menu.
+            mobileMenuButton.addEventListener('click', (e) => {
+                e.stopPropagation();
+                toggleMenu();
+            });
 
-        // Lógica do FAQ - REFEITA
-        document.querySelectorAll('.faq-item').forEach(item => {
-            const question = item.querySelector('.faq-question');
-            question.addEventListener('click', () => {
-                // Fecha outros itens abertos
-                document.querySelectorAll('.faq-item.active').forEach(activeItem => {
-                    if (activeItem !== item) {
-                        activeItem.classList.remove('active');
+            // 2. Listener para fechar o menu ao clicar FORA dele.
+            document.addEventListener('click', (e) => {
+                const isMenuOpen = !mobileMenu.classList.contains('hidden');
+                const isClickOutside = !mobileMenu.contains(e.target) && !mobileMenuButton.contains(e.target);
+
+                if (isMenuOpen && isClickOutside) {
+                    toggleMenu();
+                }
+            });
+
+            // 3. Fecha o menu ao clicar em QUALQUER LINK dentro dele (seja âncora ou externo).
+            const menuLinks = mobileMenu.querySelectorAll('a');
+            menuLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    const isMenuOpen = !mobileMenu.classList.contains('hidden');
+                    if (isMenuOpen) {
+                        toggleMenu();
                     }
                 });
-                // Alterna o item clicado
-                item.classList.toggle('active');
             });
-        });
 
-        // Lógica do formulário do WhatsApp
-        const whatsappForm = document.getElementById('whatsapp-form');
-        if(whatsappForm) {
-            whatsappForm.addEventListener('submit', function(event) {
-                event.preventDefault();
-
-                const nome = document.getElementById('nome').value;
-                const profissao = document.getElementById('profissao').value;
-                const email = document.getElementById('email').value;
-                const observacoes = document.getElementById('observacoes').value;
-
-                // --- IMPORTANTE: Substitua AQUI pelo seu número de WhatsApp ---
-                // Formato: código do país + DDD + número (tudo junto, sem espaços ou símbolos)
-                // Exemplo: 5511999998888
-                const phoneNumber = '5198040610'; 
-
-                let message = `Olá! Tenho interesse na mentoria.\n\n`;
-                message += `*Nome:* ${nome}\n`;
-                message += `*Profissão:* ${profissao}\n`;
-                message += `*Email:* ${email}\n`;
-                if (observacoes) {
-                    message += `*Observações:* ${observacoes}\n`;
-                }
-
-                const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
-
-                window.open(whatsappUrl, '_blank');
-            });
-        }
-
-        // Lógica de Rolagem Suave - REFEITA
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const targetId = this.getAttribute('href');
-                const targetElement = document.querySelector(targetId);
-                if(targetElement) {
-                    // Fecha o menu mobile antes de rolar
-                    if (!mobileMenu.classList.contains('hidden')) {
-                         mobileMenu.classList.add('hidden');
-                         mobileMenuIcon.setAttribute('data-lucide', 'menu');
-                         lucide.createIcons();
-                    }
-                    targetElement.scrollIntoView({
-                        behavior: 'smooth'
+            // --- Lógica do FAQ (Mantida como estava) ---
+            document.querySelectorAll('.faq-item').forEach(item => {
+                const question = item.querySelector('.faq-question');
+                question.addEventListener('click', () => {
+                    document.querySelectorAll('.faq-item.active').forEach(activeItem => {
+                        if (activeItem !== item) {
+                            activeItem.classList.remove('active');
+                        }
                     });
-                }
+                    item.classList.toggle('active');
+                });
             });
+
+            // --- Lógica do formulário do WhatsApp (Mantida como estava) ---
+            const whatsappForm = document.getElementById('whatsapp-form');
+            if(whatsappForm) {
+                whatsappForm.addEventListener('submit', function(event) {
+                    event.preventDefault();
+
+                    const nome = document.getElementById('nome').value;
+                    const profissao = document.getElementById('profissao').value;
+                    const email = document.getElementById('email').value;
+                    const observacoes = document.getElementById('observacoes').value;
+                    const phoneNumber = '5198040610'; 
+
+                    let message = `Olá! Tenho interesse na mentoria.\n\n`;
+                    message += `*Nome:* ${nome}\n`;
+                    message += `*Profissão:* ${profissao}\n`;
+                    message += `*Email:* ${email}\n`;
+                    if (observacoes) {
+                        message += `*Observações:* ${observacoes}\n`;
+                    }
+
+                    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+                    window.open(whatsappUrl, '_blank');
+                });
+            }
+
+            // --- Lógica de Rolagem Suave (AJUSTADA) ---
+        
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    if(targetElement) {
+                        targetElement.scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+            
+            // --- Lógica do Banner de Cookies (Mantida como estava) ---
+            const cookieBanner = document.getElementById('cookie-banner');
+            const acceptCookiesBtn = document.getElementById('accept-cookies');
+
+            if (cookieBanner && acceptCookiesBtn) {
+                setTimeout(() => {
+                    if (!localStorage.getItem('cookies_accepted')) {
+                        cookieBanner.classList.remove('hidden');
+                        cookieBanner.classList.remove('translate-y-full');
+                    }
+                }, 2000);
+
+                acceptCookiesBtn.addEventListener('click', () => {
+                    localStorage.setItem('cookies_accepted', 'true');
+                    cookieBanner.classList.add('translate-y-full');
+                });
+            }
         });
-         // Lógica do Banner de Cookies
-        const cookieBanner = document.getElementById('cookie-banner');
-        const acceptCookiesBtn = document.getElementById('accept-cookies');
-
-        if (cookieBanner && acceptCookiesBtn) {
-             // Atraso para exibir o banner e não atrapalhar o carregamento inicial
-            setTimeout(() => {
-                if (!localStorage.getItem('cookies_accepted')) {
-                    cookieBanner.classList.remove('hidden');
-                    cookieBanner.classList.remove('translate-y-full');
-                }
-            }, 2000);
-
-            acceptCookiesBtn.addEventListener('click', () => {
-                localStorage.setItem('cookies_accepted', 'true');
-                cookieBanner.classList.add('translate-y-full');
-            });
-        }
     </script>
 </body>
 </html>
