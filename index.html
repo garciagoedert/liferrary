@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liferrary | Mentoria em Aromaterapia para Esteticistas</title>
+    
+        <!-- IMPORTANTE: Substitua AQUI os caminhos para o seu favicon em diferentes tamanhos -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/imgs/favico.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/imgs/favico.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/imgs/favico.png">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        /* Estilo customizado para usar a fonte Inter e cores suaves */
+        html {
+            /* A rolagem suave agora é controlada via JavaScript para maior compatibilidade */
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F9F8F6; /* Um branco-gelo muito sutil */
+            color: #4A4A4A; /* Cinza escuro para texto principal */
+        }
+        
+        /* Cores customizadas da nova paleta */
+        .bg-brand-sage { background-color: #A3B1A1; } /* Verde sálvia suave */
+        .text-brand-sage { color: #A3B1A1; }
+        .border-brand-sage { border-color: #A3B1A1; }
+        .hover\:bg-brand-sage-dark:hover { background-color: #8F9E8D; }
+        
+        .bg-brand-sand { background-color: #EAE3D9; } /* Areia claro */
+        .text-brand-sand { color: #EAE3D9; }
+
+        .text-brand-deep-gray { color: #4A4A4A; }
+
+        /* Animação de fade-in suave */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .fade-in {
+            animation: fadeIn 1s ease-out forwards;
+        }
+        
+        /* Formas orgânicas */
+        .organic-shape-1 {
+            position: absolute;
+            top: -10%;
+            left: -15%;
+            width: 50%;
+            height: 50%;
+            background-color: #EAE3D9;
+            border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+            z-index: 0;
+            animation: morph 8s ease-in-out infinite;
+        }
+
+        @keyframes morph {
+            0% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+            50% { border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; }
+            100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+        }
+
+        /* Estilo para o FAQ - CORRIGIDO e inspirado no seu exemplo */
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out, padding 0.5s ease-in-out;
+            padding: 0 1.5rem;
+        }
+        .faq-item.active .faq-answer {
+            max-height: 250px; /* Altura suficiente para o conteúdo */
+            padding: 0.5rem 1.5rem 1.5rem;
+        }
+        .faq-item.active .faq-icon {
+            transform: rotate(180deg);
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- ===== Header ===== -->
+    <header class="absolute top-0 left-0 w-full z-20 py-6 px-4 md:px-8">
+        <div class="container mx-auto flex justify-between items-center">
+            <!-- Logo substituída por uma imagem placeholder -->
+            <a href="#">
+                <!-- IMPORTANTE: Substitua AQUI a URL da sua logo -->
+                <img src="/imgs/logo.png" alt="Liferrary Logo" class="h-10 md:h-auto">
+            </a>
+            <nav class="hidden md:flex items-center space-x-8">
+                <a href="#sobre" class="text-gray-600 hover:text-brand-deep-gray transition-colors duration-300">A Mentoria</a>
+                <a href="#depoimentos" class="text-gray-600 hover:text-brand-deep-gray transition-colors duration-300">Resultados</a>
+                <a href="https://api.whatsapp.com/send/?phone=5198040610&text=Ol%C3%A1%21+Tenho+interesse+em+agendar+a+mentoria+&type=phone_number&app_absent=0" class="bg-brand-sage text-white px-6 py-2 rounded-full hover:bg-brand-sage-dark transition-all duration-300">Agendar</a>
+            </nav>
+            <button id="mobile-menu-button" class="md:hidden">
+                <i data-lucide="menu" class="text-brand-deep-gray"></i>
+            </button>
+        </div>
+         <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white/90 backdrop-blur-md rounded-lg shadow-lg mt-4 mx-4">
+            <a href="#sobre" class="block py-3 px-4 text-gray-600 hover:text-brand-deep-gray">A Mentoria</a>
+            <a href="#depoimentos" class="block py-3 px-4 text-gray-600 hover:text-brand-deep-gray">Resultados</a>
+            <a href="https://api.whatsapp.com/send/?phone=5198040610&text=Ol%C3%A1%21+Tenho+interesse+em+agendar+a+mentoria+&type=phone_number&app_absent=0" class="block m-4 text-center bg-brand-sage text-white px-6 py-3 rounded-full hover:bg-brand-sage-dark">Agendar</a>
+        </div>
+    </header>
+
+    <main>
+        <!-- ===== Hero Section ===== -->
+        <section id="hero" class="relative min-h-screen flex items-center overflow-hidden">
+            <div class="organic-shape-1"></div>
+            <div class="container mx-auto px-6 py-24 md:py-32 grid md:grid-cols-2 gap-12 items-center z-10">
+                <div class="fade-in text-center md:text-left">
+                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-brand-deep-gray leading-tight">
+                        Eleve sua estética. <br>Transforme com a natureza.
+                    </h1>
+                    <p class="mt-6 text-lg text-gray-600 max-w-lg mx-auto md:mx-0">
+                        Descubra como integrar a aromaterapia de forma segura e científica para criar tratamentos exclusivos, encantar suas clientes e se tornar uma referência.
+                    </p>
+                    <div class="mt-10">
+                        <a href="https://api.whatsapp.com/send/?phone=5198040610&text=Ol%C3%A1%21+Quero+me+inscrever+na+mentoria+&type=phone_number&app_absent=0" class="bg-brand-sage text-white px-10 py-4 rounded-full text-lg font-semibold hover:bg-brand-sage-dark transition-transform duration-300 hover:scale-105 shadow-lg inline-block">
+                            Quero me Inscrever
+                        </a>
+                    </div>
+                </div>
+                <div class="relative h-full hidden md:block fade-in" style="animation-delay: 200ms;">
+                    <div class="absolute inset-0 bg-brand-sand rounded-3xl transform rotate-3"></div>
+                    <!-- IMPORTANTE: Substitua AQUI a URL da imagem principal -->
+                    <img src="/imgs/principal1.png" 
+                         onerror="this.onerror=null;this.src='/imgs/principal1.png';"
+                         alt="Mulher com pele saudável rodeada por elementos naturais" class="rounded-3xl shadow-2xl relative z-10 w-full h-full object-cover">
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== Founder Section ===== -->
+        <section class="py-20 md:py-32 bg-white overflow-hidden">
+            <div class="container mx-auto px-6 grid md:grid-cols-2 gap-16 items-center">
+                <div class="relative flex justify-center items-center">
+                     <div class="absolute w-full h-full bg-brand-sage rounded-full opacity-20 transform scale-125"></div>
+                     <!-- IMPORTANTE: Substitua AQUI a URL da foto da Liana -->
+                     <img src="/imgs/liana.png.png" 
+                          onerror="this.onerror=null;this.src='/imgs/liana.png.png';"
+                          alt="Foto de Liana Ferrary" class="rounded-full shadow-xl w-full max-w-sm relative z-10">
+                </div>
+                <div>
+                    <h2 class="text-3xl md:text-4xl font-bold text-brand-deep-gray">Olá, sou Liana Ferrary.</h2>
+                    <p class="mt-6 text-lg text-gray-600">Graduanda em Biomedicina e aromaterapeuta apaixonada, minha missão é construir pontes entre a ciência e a natureza. Eu acredito que o verdadeiro cuidado estético nasce da compreensão profunda do indivíduo e do poder terapêutico dos óleos essenciais.</p>
+                    <p class="mt-4 text-lg text-gray-600">Criei esta mentoria para compartilhar com você, de forma prática e individual, o conhecimento que adquiri para que possa transformar sua carreira e a pele de suas clientes com segurança e propósito.</p>
+                    <!-- IMPORTANTE: Substitua AQUI a URL do seu Instagram -->
+                    <a href="https://www.instagram.com/liferrary/?hl=pt" target="_blank" class="inline-flex items-center mt-8 text-brand-sage font-semibold group">
+                        Me acompanhe no Instagram
+                        <i data-lucide="arrow-right" class="ml-2 w-5 h-5 transition-transform duration-300 group-hover:translate-x-1"></i>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== Call to Action Section ===== -->
+        <section class="py-20 md:py-32">
+            <div class="container mx-auto px-6 text-center">
+                <h2 class="text-3xl md:text-4xl font-bold text-brand-deep-gray max-w-3xl mx-auto">A mentoria é para você que...</h2>
+                <div class="mt-12 max-w-4xl mx-auto grid sm:grid-cols-2 gap-x-12 gap-y-8 text-left">
+                    <div class="flex items-start space-x-3">
+                        <div class="flex-shrink-0 bg-brand-sage text-white rounded-full p-1.5 mt-1">
+                            <i data-lucide="check" class="w-5 h-5"></i>
+                        </div>
+                        <p class="text-gray-600 text-lg">Pretende ampliar a sua abordagem e oferecer tratamentos diferenciados para seus pacientes.</p>
+                    </div>
+                    <div class="flex items-start space-x-3">
+                        <div class="flex-shrink-0 bg-brand-sage text-white rounded-full p-1.5 mt-1">
+                            <i data-lucide="check" class="w-5 h-5"></i>
+                        </div>
+                        <p class="text-gray-600 text-lg">Pretende unir bem-estar e autocuidado junto ao tratamento convencional com recursos naturais.</p>
+                    </div>
+                    <div class="flex items-start space-x-3">
+                        <div class="flex-shrink-0 bg-brand-sage text-white rounded-full p-1.5 mt-1">
+                            <i data-lucide="check" class="w-5 h-5"></i>
+                        </div>
+                        <p class="text-gray-600 text-lg">Deseja ser agente transformador tratando de maneira integrativa e completa.</p>
+                    </div>
+                    <div class="flex items-start space-x-3">
+                        <div class="flex-shrink-0 bg-brand-sage text-white rounded-full p-1.5 mt-1">
+                            <i data-lucide="check" class="w-5 h-5"></i>
+                        </div>
+                        <p class="text-gray-600 text-lg">Quer ser reconhecida com esse diferencial.</p>
+                    </div>
+                    <div class="flex items-start space-x-3">
+                        <div class="flex-shrink-0 bg-brand-sage text-white rounded-full p-1.5 mt-1">
+                            <i data-lucide="check" class="w-5 h-5"></i>
+                        </div>
+                        <p class="text-gray-600 text-lg">Precisa aprender técnicas seguras e estratégicas para aplicar a aromaterapia em seu ambiente profissional.</p>
+                    </div>
+                    <div class="flex items-start space-x-3">
+                        <div class="flex-shrink-0 bg-brand-sage text-white rounded-full p-1.5 mt-1">
+                            <i data-lucide="check" class="w-5 h-5"></i>
+                        </div>
+                        <p class="text-gray-600 text-lg">Gostaria de personalizar os atendimentos com blends desenvolvidos especialmente para cada necessidade clínica.</p>
+                    </div>
+                </div>
+                <div class="mt-16">
+                    <a href="https://api.whatsapp.com/send/?phone=5198040610&text=Ol%C3%A1%21+Quero+transformar+minha+carreira+com+a+mentoria+&type=phone_number&app_absent=0" class="bg-brand-sage text-white px-10 py-4 rounded-full text-lg font-semibold hover:bg-brand-sage-dark transition-transform duration-300 hover:scale-105 shadow-lg inline-block">
+                        Sim, quero transformar minha carreira
+                    </a>
+                    <a href="#sobre" class="mt-4 block text-sm text-gray-600 hover:text-brand-deep-gray underline">Saiba mais sobre a imersão</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== Mentorship Content Section ===== -->
+        <section id="sobre" class="py-20 md:py-32 bg-white">
+            <div class="container mx-auto px-6 grid md:grid-cols-2 gap-16 items-center">
+                <div class="order-2 md:order-1">
+                    <h2 class="text-3xl md:text-4xl font-bold text-brand-deep-gray">Uma imersão completa para você dominar a aromaterapia</h2>
+                    <p class="mt-4 text-lg text-gray-600">A mentoria é desenhada em uma jornada prática e teórica para que você saia pronta para aplicar o conhecimento.</p>
+                    <div class="mt-8 space-y-6">
+                        <!-- Module 1 -->
+                        <div class="flex items-start">
+                            <div class="bg-brand-sand p-3 rounded-xl mr-4"><i data-lucide="book-open" class="text-brand-deep-gray w-6 h-6"></i></div>
+                            <div>
+                                <h3 class="font-bold text-lg text-brand-deep-gray">Módulo 1: Fundamentos da Aromaterapia</h3>
+                                <p class="text-gray-600">Conceitos básicos, princípios ativos, vias de ação, formas de uso e segurança dos óleos essenciais.</p>
+                            </div>
+                        </div>
+                        <!-- Module 2 -->
+                        <div class="flex items-start">
+                            <div class="bg-brand-sand p-3 rounded-xl mr-4"><i data-lucide="flask-conical" class="text-brand-deep-gray w-6 h-6"></i></div>
+                            <div>
+                                <h3 class="font-bold text-lg text-brand-deep-gray">Módulo 2: Aromaterapia na Prática</h3>
+                                <p class="text-gray-600">Aplicações práticas para potencializar seus atendimentos. Sinergias aromáticas e terapêuticas.</p>
+                            </div>
+                        </div>
+                        <!-- Module 3 -->
+                        <div class="flex items-start">
+                            <div class="bg-brand-sand p-3 rounded-xl mr-4"><i data-lucide="sparkles" class="text-brand-deep-gray w-6 h-6"></i></div>
+                            <div>
+                                <h3 class="font-bold text-lg text-brand-deep-gray">Módulo 3: Práticas Integrativas</h3>
+                                <p class="text-gray-600">Como integrar a aromaterapia com outras abordagens terapêuticas para um atendimento completo.</p>
+                            </div>
+                        </div>
+                        <!-- Module 4 -->
+                        <div class="flex items-start">
+                            <div class="bg-brand-sand p-3 rounded-xl mr-4"><i data-lucide="users" class="text-brand-deep-gray w-6 h-6"></i></div>
+                            <div>
+                                <h3 class="font-bold text-lg text-brand-deep-gray">Vivência Prática</h3>
+                                <p class="text-gray-600">Testes olfativos e desenvolvimento de blends personalizados para enriquecer seus atendimentos.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="relative flex justify-center items-center order-1 md:order-2">
+                    <div class="relative w-[280px] h-[600px] md:w-[300px] md:h-[640px] bg-gray-800 rounded-[40px] shadow-2xl p-3 border-4 border-gray-200">
+                        <!-- IMPORTANTE: Substitua AQUI a URL do seu vídeo -->
+                        <video class="w-full h-full object-cover rounded-[30px]"  loop controls controlsList="nofullscreen" playsinline>
+                            <source src="/videos/video.mp4" type="video/mp4">
+                            Seu navegador não suporta a tag de vídeo.
+                        </video>
+                        <div class="absolute top-4 left-1/2 -translate-x-1/2 w-16 h-4 bg-gray-800 rounded-full border-2 border-gray-500"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== Exclusive Kit Section ===== -->
+        <section class="py-20 md:py-32 bg-white">
+            <div class="container mx-auto px-6 grid md:grid-cols-2 gap-16 items-center">
+                <div class="flex justify-center">
+                    <!-- IMPORTANTE: Substitua AQUI a URL da foto do seu kit -->
+                    <img src="/imgs/image 1.png" 
+                         onerror="this.onerror=null;this.src='/imgs/image 1.png';"
+                         alt="Foto do kit exclusivo da mentoria" class="rounded-2xl shadow-xl">
+                </div>
+                <div>
+                    <h2 class="text-3xl md:text-4xl font-bold text-brand-deep-gray">Receba um kit exclusivo para começar</h2>
+                    <p class="mt-4 text-lg text-gray-600">Prepare-se para elevar sua prática com um kit pensado especialmente para você! Ao participar da nossa Mentoria, você receberá em mãos:</p>
+                    <ul class="mt-8 space-y-4">
+                        <li class="flex items-center"><i data-lucide="check-circle-2" class="w-6 h-6 text-brand-sage mr-3"></i><span><strong>3 Bases Personalizáveis:</strong> Sérum, creme e sabonete líquido.</span></li>
+                        <li class="flex items-center"><i data-lucide="check-circle-2" class="w-6 h-6 text-brand-sage mr-3"></i><span><strong>Apostila Completa:</strong> Para aprofundar seus conhecimentos.</span></li>
+                        <li class="flex items-center"><i data-lucide="check-circle-2" class="w-6 h-6 text-brand-sage mr-3"></i><span><strong>Blends Exclusivos:</strong> Gotas de óleos essenciais selecionados.</span></li>
+                        <li class="flex items-center"><i data-lucide="check-circle-2" class="w-6 h-6 text-brand-sage mr-3"></i><span><strong>Necessaire Personalizada:</strong> Elegância e praticidade.</span></li>
+                        <li class="flex items-center"><i data-lucide="check-circle-2" class="w-6 h-6 text-brand-sage mr-3"></i><span><strong>Pipeta de Precisão:</strong> Para manuseio seguro e eficaz.</span></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        
+        <!-- ===== Inscription CTA Section ===== -->
+        <section id="inscricao" class="py-20 md:py-32">
+            <div class="container mx-auto px-6">
+                <div class="bg-brand-sand rounded-3xl p-8 md:p-16 text-center">
+                    <h2 class="text-3xl md:text-4xl font-bold text-brand-deep-gray">Pronta para iniciar sua transformação?</h2>
+                    <p class="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">A mentoria individual é um encontro de um dia inteiro, presencial, com 3 meses de suporte online para garantir que você aplique todo o conhecimento com confiança.</p>
+                    
+                    <div class="my-8">
+                        <span class="text-2xl text-gray-500 line-through">R$ 1200,00</span>
+                        <span class="text-5xl font-bold text-brand-deep-gray block">R$ 997</span>
+                        <p class="text-gray-600 mt-1">ou em até 5x no cartão de crédito</p>
+                    </div>
+
+                    <a href="https://api.whatsapp.com/send/?phone=5198040610&text=Ol%C3%A1%21+Quero+garantir+minha+vaga+na+mentoria+&type=phone_number&app_absent=0" class="bg-brand-sage text-white px-10 py-4 rounded-full text-lg font-semibold hover:bg-brand-sage-dark transition-transform duration-300 hover:scale-105 shadow-lg inline-block">
+                        Quero garantir minha vaga
+                    </a>
+                    <p class="mt-6 text-sm text-gray-500">Vagas limitadas para garantir a qualidade do atendimento individual.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== Testimonials Section ===== -->
+        <section id="depoimentos" class="py-20 md:py-32">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold text-brand-deep-gray">Resultados que inspiram</h2>
+                    <p class="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">Veja o que outras profissionais dizem sobre a mentoria.</p>
+                </div>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <!-- Testimonial 1 -->
+                    <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
+                        <i data-lucide="quote" class="text-brand-sage w-10 h-10 mb-4 opacity-50"></i>
+                        <p class="text-gray-600 text-lg mb-6">"Eu tinha muito receio de usar óleos e não saber o que estava fazendo. A Liana me deu a segurança que eu precisava. Hoje, meus tratamentos com aromaterapia são os mais elogiados e eu me sinto muito mais confiante."</p>
+                        <div class="flex items-center">
+                            <img src="https://placehold.co/100x100/EAE3D9/4A4A4A?text=A" alt="Foto de Ana" class="w-12 h-12 rounded-full mr-4">
+                            <div>
+                                <p class="font-bold text-brand-deep-gray">Ana Silva</p>
+                                <p class="text-sm text-gray-500">Esteticista, Florianópolis</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Testimonial 2 -->
+                    <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
+                        <i data-lucide="quote" class="text-brand-sage w-10 h-10 mb-4 opacity-50"></i>
+                        <p class="text-gray-600 text-lg mb-6">"A mentoria foi um divisor de águas. Aprendi a criar blends que realmente funcionam e a comunicar isso para minhas clientes. Consegui aumentar o valor dos meus serviços e atrair um novo público."</p>
+                        <div class="flex items-center">
+                            <img src="https://placehold.co/100x100/EAE3D9/4A4A4A?text=C" alt="Foto de Carla" class="w-12 h-12 rounded-full mr-4">
+                            <div>
+                                <p class="font-bold text-brand-deep-gray">Carla Mendes</p>
+                                <p class="text-sm text-gray-500">Dona de Spa Urbano, São Leopoldo</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== FAQ Section ===== -->
+        <section class="py-20 md:py-32 bg-white">
+            <div class="container mx-auto px-6 max-w-3xl">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold text-brand-deep-gray">Dúvidas Frequentes</h2>
+                    <p class="mt-4 text-lg text-gray-600">Tudo o que você precisa saber antes de se inscrever.</p>
+                </div>
+                <div class="space-y-4">
+                    <!-- FAQ Item 1 -->
+                    <div class="faq-item bg-white border border-gray-200 rounded-lg shadow-sm">
+                        <button class="faq-question w-full flex justify-between items-center text-left p-6 focus:outline-none">
+                            <span class="text-lg font-semibold text-gray-800">Preciso ter experiência prévia com aromaterapia?</span>
+                            <i data-lucide="chevron-down" class="faq-icon transition-transform duration-300"></i>
+                        </button>
+                        <div class="faq-answer text-gray-600">
+                            <p>Não. Nosso programa é estruturado para atender tanto iniciantes quanto profissionais que já possuem alguma familiaridade e querem aprofundar seus conhecimentos de forma prática e personalizada.</p>
+                        </div>
+                    </div>
+                    <!-- FAQ Item 2 -->
+                    <div class="faq-item bg-white border border-gray-200 rounded-lg shadow-sm">
+                        <button class="faq-question w-full flex justify-between items-center text-left p-6 focus:outline-none">
+                            <span class="text-lg font-semibold text-gray-800">Como posso me inscrever?</span>
+                            <i data-lucide="chevron-down" class="faq-icon transition-transform duration-300"></i>
+                        </button>
+                        <div class="faq-answer text-gray-600">
+                            <p>Preencha o formulário no final da página e clique em "Enviar e garantir minha vaga". Suas informações serão enviadas para nosso WhatsApp e entraremos em contato para finalizar a inscrição.</p>
+                        </div>
+                    </div>
+                    <!-- FAQ Item 3 -->
+                    <div class="faq-item bg-white border border-gray-200 rounded-lg shadow-sm">
+                        <button class="faq-question w-full flex justify-between items-center text-left p-6 focus:outline-none">
+                            <span class="text-lg font-semibold text-gray-800">Qual é a duração total da mentoria?</span>
+                            <i data-lucide="chevron-down" class="faq-icon transition-transform duration-300"></i>
+                        </button>
+                        <div class="faq-answer text-gray-600">
+                            <p>Nosso programa intensivo acontece em um único dia, onde todos os módulos e vivências práticas são realizados de forma personalizada, garantindo uma experiência completa e direta. E o suporte online permanece por 90 dias.</p>
+                        </div>
+                    </div>
+                    <!-- FAQ Item 4 -->
+                    <div class="faq-item bg-white border border-gray-200 rounded-lg shadow-sm">
+                        <button class="faq-question w-full flex justify-between items-center text-left p-6 focus:outline-none">
+                            <span class="text-lg font-semibold text-gray-800">A mentoria oferece certificado de participação?</span>
+                            <i data-lucide="chevron-down" class="faq-icon transition-transform duration-300"></i>
+                        </button>
+                        <div class="faq-answer text-gray-600">
+                            <p>Sim! Ao final do treinamento, você receberá um certificado que comprova sua especialização em Aromaterapia aplicada para Profissionais da Estética, agregando valor à sua prática profissional.</p>
+                        </div>
+                    </div>
+                     <!-- FAQ Item 5 -->
+                     <div class="faq-item bg-white border border-gray-200 rounded-lg shadow-sm">
+                        <button class="faq-question w-full flex justify-between items-center text-left p-6 focus:outline-none">
+                            <span class="text-lg font-semibold text-gray-800">Qual a metodologia utilizada durante a mentoria?</span>
+                            <i data-lucide="chevron-down" class="faq-icon transition-transform duration-300"></i>
+                        </button>
+                        <div class="faq-answer text-gray-600">
+                            <p>Combinamos teoria e prática de maneira integrada, com aula didática, dinâmicas interativas, testes olfativos e o desenvolvimento de blends personalizados, permitindo que você aplique imediatamente os conhecimentos adquiridos.</p>
+                        </div>
+                    </div>
+                     <!-- FAQ Item 6 -->
+                     <div class="faq-item bg-white border border-gray-200 rounded-lg shadow-sm">
+                        <button class="faq-question w-full flex justify-between items-center text-left p-6 focus:outline-none">
+                            <span class="text-lg font-semibold text-gray-800">Como a mentoria é adaptada para a minha área de atuação?</span>
+                            <i data-lucide="chevron-down" class="faq-icon transition-transform duration-300"></i>
+                        </button>
+                        <div class="faq-answer text-gray-600">
+                            <p>Cada módulo é customizado para atender as demandas específicas de profissionais da estética, possibilitando a integração da aromaterapia nos seus protocolos e tratamentos.</p>
+                        </div>
+                    </div>
+                     <!-- FAQ Item 7 -->
+                     <div class="faq-item bg-white border border-gray-200 rounded-lg shadow-sm">
+                        <button class="faq-question w-full flex justify-between items-center text-left p-6 focus:outline-none">
+                            <span class="text-lg font-semibold text-gray-800">Quais formas de pagamento são aceitas?</span>
+                            <i data-lucide="chevron-down" class="faq-icon transition-transform duration-300"></i>
+                        </button>
+                        <div class="faq-answer text-gray-600">
+                            <p>Aceitamos diversas opções de pagamento, incluindo PIX com 10% de desconto ou parcelamento em até 5x no cartão de crédito. Entre em contato conosco para escolher a melhor forma para você.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== Contact Form Section ===== -->
+        <section id="contato" class="py-20 md:py-32">
+            <div class="container mx-auto px-6">
+                <div class="bg-white rounded-3xl p-8 md:p-12 shadow-md border border-gray-100">
+                    <div class="text-center">
+                        <h2 class="text-3xl md:text-4xl font-bold text-brand-deep-gray">Fale conosco e garanta sua vaga</h2>
+                        <p class="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">Preencha o formulário abaixo para enviar seus dados diretamente para nosso WhatsApp. Entraremos em contato para finalizar sua inscrição e tirar qualquer dúvida.</p>
+                    </div>
+
+                    <form id="whatsapp-form" class="max-w-xl mx-auto mt-12 text-left space-y-4">
+                        <div>
+                            <label for="nome" class="font-semibold text-brand-deep-gray">Nome</label>
+                            <input type="text" id="nome" name="nome" required class="w-full mt-1 p-3 bg-gray-50 rounded-lg border border-gray-300 focus:ring-2 focus:ring-brand-sage transition">
+                        </div>
+                        <div>
+                            <label for="profissao" class="font-semibold text-brand-deep-gray">Profissão</label>
+                            <input type="text" id="profissao" name="profissao" required class="w-full mt-1 p-3 bg-gray-50 rounded-lg border border-gray-300 focus:ring-2 focus:ring-brand-sage transition">
+                        </div>
+                        <div>
+                            <label for="email" class="font-semibold text-brand-deep-gray">Email</label>
+                            <input type="email" id="email" name="email" required class="w-full mt-1 p-3 bg-gray-50 rounded-lg border border-gray-300 focus:ring-2 focus:ring-brand-sage transition">
+                        </div>
+                        <div>
+                            <label for="observacoes" class="font-semibold text-brand-deep-gray">Observações</label>
+                            <textarea id="observacoes" name="observacoes" rows="4" placeholder="Tem alguma dúvida ou gostaria de adicionar uma informação?" class="w-full mt-1 p-3 bg-gray-50 rounded-lg border border-gray-300 focus:ring-2 focus:ring-brand-sage transition"></textarea>
+                        </div>
+                        <div class="text-center pt-4">
+                            <button type="submit" class="bg-brand-sage text-white px-10 py-4 rounded-full text-lg font-semibold hover:bg-brand-sage-dark transition-transform duration-300 hover:scale-105 shadow-lg inline-block">
+                                Enviar e falar no WhatsApp
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ===== Footer ===== -->
+    <footer class="bg-transparent">
+        <div class="container mx-auto px-6 py-12 text-center">
+            <a href="#hero">
+                <!-- IMPORTANTE: Substitua AQUI a URL da sua logo -->
+                <img src="/imgs/logo.png" alt="Liferrary Logo" class="h-18 w-auto mx-auto">
+            </a>
+            <br>
+            <p class="mt-4 text-gray-500">Aromaterapia científica para esteticistas que transformam.</p>
+            <div class="mt-6 flex justify-center space-x-6">
+                <a href="https://www.instagram.com/liferrary/?hl=pt" class="text-gray-500 hover:text-brand-sage"><i data-lucide="instagram"></i></a>
+                <a href="mailto:Lianapferrary@gmail.com" class="text-gray-500 hover:text-brand-sage"><i data-lucide="mail"></i></a>
+                <a href="https://api.whatsapp.com/send/?phone=5198040610&text=Ol%C3%A1%21+Quero+saber+mais+sobre+a+mentoria+&type=phone_number&app_absent=0" class="text-gray-500 hover:text-brand-sage"><i data-lucide="phone"></i></a>
+            </div>
+            <div class="mt-8 text-sm text-gray-400">
+                <p>&copy; 2025 Liferrary. Todos os direitos reservados.</p>
+                <p class="mt-1">made with 💙 by <a href="https://www.southsea.com.br/">South Sea</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Ativa os ícones do Lucide
+        lucide.createIcons();
+
+        // Lógica do menu mobile
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Lógica do FAQ - REFEITA
+        document.querySelectorAll('.faq-item').forEach(item => {
+            const question = item.querySelector('.faq-question');
+            question.addEventListener('click', () => {
+                // Fecha outros itens abertos
+                document.querySelectorAll('.faq-item.active').forEach(activeItem => {
+                    if (activeItem !== item) {
+                        activeItem.classList.remove('active');
+                    }
+                });
+                // Alterna o item clicado
+                item.classList.toggle('active');
+            });
+        });
+
+        // Lógica do formulário do WhatsApp
+        const whatsappForm = document.getElementById('whatsapp-form');
+        if(whatsappForm) {
+            whatsappForm.addEventListener('submit', function(event) {
+                event.preventDefault();
+
+                const nome = document.getElementById('nome').value;
+                const profissao = document.getElementById('profissao').value;
+                const email = document.getElementById('email').value;
+                const observacoes = document.getElementById('observacoes').value;
+
+                // --- IMPORTANTE: Substitua AQUI pelo seu número de WhatsApp ---
+                // Formato: código do país + DDD + número (tudo junto, sem espaços ou símbolos)
+                // Exemplo: 5511999998888
+                const phoneNumber = '5198040610'; 
+
+                let message = `Olá! Tenho interesse na mentoria.\n\n`;
+                message += `*Nome:* ${nome}\n`;
+                message += `*Profissão:* ${profissao}\n`;
+                message += `*Email:* ${email}\n`;
+                if (observacoes) {
+                    message += `*Observações:* ${observacoes}\n`;
+                }
+
+                const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+
+                window.open(whatsappUrl, '_blank');
+            });
+        }
+
+        // Lógica de Rolagem Suave - REFEITA
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                if(targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
