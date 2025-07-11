@@ -9,6 +9,7 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/imgs/favico.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/imgs/favico.png">
     <link rel="apple-touch-icon" sizes="180x180" href="/imgs/favico.png">
+   
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -42,6 +43,7 @@
         .text-brand-sand { color: #EAE3D9; }
 
         .text-brand-deep-gray { color: #4A4A4A; }
+.bg-brand-deep-gray { background-color: #4A4A4A; } /* Adicionado para o banner de cookies */
 
         /* Animação de fade-in suave */
         @keyframes fadeIn {
@@ -95,19 +97,19 @@
             <!-- Logo substituída por uma imagem placeholder -->
             <a href="#">
                 <!-- IMPORTANTE: Substitua AQUI a URL da sua logo -->
-                <img src="/imgs/logo.png" alt="Liferrary Logo" class="h-10 md:h-auto">
+                <img src="/imgs/logo.png" alt="Liferrary Logo" class="h-18 md:h-auto">
             </a>
             <nav class="hidden md:flex items-center space-x-8">
                 <a href="#sobre" class="text-gray-600 hover:text-brand-deep-gray transition-colors duration-300">A Mentoria</a>
                 <a href="#depoimentos" class="text-gray-600 hover:text-brand-deep-gray transition-colors duration-300">Resultados</a>
                 <a href="https://api.whatsapp.com/send/?phone=5198040610&text=Ol%C3%A1%21+Tenho+interesse+em+agendar+a+mentoria+&type=phone_number&app_absent=0" class="bg-brand-sage text-white px-6 py-2 rounded-full hover:bg-brand-sage-dark transition-all duration-300">Agendar</a>
             </nav>
-            <button id="mobile-menu-button" class="md:hidden">
+            <button id="mobile-menu-button" class="md:hidden z-30">
                 <i data-lucide="menu" class="text-brand-deep-gray"></i>
             </button>
         </div>
          <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden md:hidden bg-white/90 backdrop-blur-md rounded-lg shadow-lg mt-4 mx-4">
+        <div id="mobile-menu" class="hidden md:hidden bg-white/95 backdrop-blur-md rounded-lg shadow-lg mt-4 mx-4">
             <a href="#sobre" class="block py-3 px-4 text-gray-600 hover:text-brand-deep-gray">A Mentoria</a>
             <a href="#depoimentos" class="block py-3 px-4 text-gray-600 hover:text-brand-deep-gray">Resultados</a>
             <a href="https://api.whatsapp.com/send/?phone=5198040610&text=Ol%C3%A1%21+Tenho+interesse+em+agendar+a+mentoria+&type=phone_number&app_absent=0" class="block m-4 text-center bg-brand-sage text-white px-6 py-3 rounded-full hover:bg-brand-sage-dark">Agendar</a>
@@ -492,16 +494,56 @@
         </div>
     </footer>
 
+     <!-- Cookie Consent Banner -->
+    <div id="cookie-banner" class="hidden fixed bottom-0 left-0 right-0 bg-brand-deep-gray text-white p-4 z-50 flex flex-col md:flex-row justify-between items-center text-center md:text-left transition-transform duration-500 transform translate-y-full">
+        <p class="text-sm mb-2 md:mb-0 md:mr-4">Este site utiliza cookies para garantir que você obtenha a melhor experiência. <a href="#" class="underline hover:text-gray-300">Saiba mais</a>.</p>
+        <button id="accept-cookies" class="bg-brand-sage text-white px-5 py-2 rounded-full hover:bg-brand-sage-dark whitespace-nowrap w-full md:w-auto">Aceitar</button>
+    </div>
+
+
     <script>
         // Ativa os ícones do Lucide
         lucide.createIcons();
 
-        // Lógica do menu mobile
+         // --- LÓGICA DO MENU MOBILE (Comentada para clareza) ---
         const mobileMenuButton = document.getElementById('mobile-menu-button');
         const mobileMenu = document.getElementById('mobile-menu');
-        mobileMenuButton.addEventListener('click', () => {
+        const mobileMenuIcon = mobileMenuButton.querySelector('i');
+
+        mobileMenuButton.addEventListener('click', (e) => {
+            // 1. Impede que o clique no botão se propague para outros elementos, como o 'document'.
+            // Isso é crucial para que o listener no 'document' (que fecha o menu) não seja acionado ao mesmo tempo.
+            e.stopPropagation(); 
+            
+            // 2. Alterna a classe 'hidden' para mostrar ou esconder o menu.
             mobileMenu.classList.toggle('hidden');
+            
+            // 3. Muda o ícone de 'menu' para 'x' e vice-versa, para feedback visual.
+            if (mobileMenu.classList.contains('hidden')) {
+                mobileMenuIcon.setAttribute('data-lucide', 'menu');
+            } else {
+                mobileMenuIcon.setAttribute('data-lucide', 'x');
+            }
+            lucide.createIcons(); // Re-renderiza o ícone do Lucide.
         });
+
+        // 4. Adiciona um listener de clique no documento inteiro para fechar o menu.
+        document.addEventListener('click', (event) => {
+            // Verifica se o menu está visível.
+            const isMenuOpen = !mobileMenu.classList.contains('hidden');
+            // Verifica se o clique foi DENTRO do menu.
+            const isClickInsideMenu = mobileMenu.contains(event.target);
+            // Verifica se o clique foi no próprio botão que abre o menu.
+            const isClickOnButton = mobileMenuButton.contains(event.target);
+
+            // 5. Se o menu estiver aberto E o clique foi fora do menu E não foi no botão, então fecha o menu.
+            if (isMenuOpen && !isClickInsideMenu && !isClickOnButton) {
+                mobileMenu.classList.add('hidden');
+                mobileMenuIcon.setAttribute('data-lucide', 'menu');
+                lucide.createIcons();
+            }
+        });
+
 
         // Lógica do FAQ - REFEITA
         document.querySelectorAll('.faq-item').forEach(item => {
@@ -555,12 +597,36 @@
                 const targetId = this.getAttribute('href');
                 const targetElement = document.querySelector(targetId);
                 if(targetElement) {
+                    // Fecha o menu mobile antes de rolar
+                    if (!mobileMenu.classList.contains('hidden')) {
+                         mobileMenu.classList.add('hidden');
+                         mobileMenuIcon.setAttribute('data-lucide', 'menu');
+                         lucide.createIcons();
+                    }
                     targetElement.scrollIntoView({
                         behavior: 'smooth'
                     });
                 }
             });
         });
+         // Lógica do Banner de Cookies
+        const cookieBanner = document.getElementById('cookie-banner');
+        const acceptCookiesBtn = document.getElementById('accept-cookies');
+
+        if (cookieBanner && acceptCookiesBtn) {
+             // Atraso para exibir o banner e não atrapalhar o carregamento inicial
+            setTimeout(() => {
+                if (!localStorage.getItem('cookies_accepted')) {
+                    cookieBanner.classList.remove('hidden');
+                    cookieBanner.classList.remove('translate-y-full');
+                }
+            }, 2000);
+
+            acceptCookiesBtn.addEventListener('click', () => {
+                localStorage.setItem('cookies_accepted', 'true');
+                cookieBanner.classList.add('translate-y-full');
+            });
+        }
     </script>
 </body>
 </html>
